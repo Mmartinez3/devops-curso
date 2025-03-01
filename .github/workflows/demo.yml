@@ -45,4 +45,3 @@ jobs:
           context: .
           push: true
           tags: peperro:app:latest
-          
