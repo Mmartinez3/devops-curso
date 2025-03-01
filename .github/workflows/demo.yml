@@ -46,6 +46,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.REGISTRY }}/{{ env.REPOSITORY }}:latest,
-            ${{ env.REGISTRY }}/{{ env.REPOSITORY }}:{{ github.sha }}
+          tags: peperro/app:v2
