@@ -1,0 +1,24 @@
+name: demo github action
+
+on:
+  push:
+    branches: ["devops-simple-node1"]
+  pull_request:
+    branches: ["devops-simple-node1"]
+
+  workflow_dispatch:
+  
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+
+        - name: Run a one-line script
+          run: echo hola hola
+
+        - name: run a multiline script
+          run: |
+            echo add other actions to build
+            echo test, and deploy your project.
