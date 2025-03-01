@@ -16,8 +16,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: saludo
-        run: echo "hola, ${{github.actor}}">info.txt
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.2.0
+        with:
+          node-version: 21
 
-      - name: imprimir texto
-        run: cat info.txt
+      - name: instalar dependencias
+        run: npm install
+      - name: instalar test
+         run: npm run test
