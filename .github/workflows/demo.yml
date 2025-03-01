@@ -16,5 +16,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Listar archivos
-        run: ls -a
+      - name: saludo
+        run: echo "hola, {{github.actor}}">info.txt
+
+      - name: imprimir texto
+        run: cat info.txt
