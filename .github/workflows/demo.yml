@@ -12,7 +12,8 @@ env:
   REGISTRY : ${{ secrets.DOCKER_USERNAME }}
   REPOSITORY: ${{ github.event.repository.name }}
 jobs:
-  build:
+  init:
+    name: install dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -26,12 +27,33 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      - name: Ejecutar tests
+
+
+
+  test:
+    needs: init
+    name: prueba de herramientas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.2.0
+        with:
+          node-version: 21
+
+      - name: ejecutar tests
         run: npm run test
 
-  ci:
+
+  deploy_to_dev:
+    name: deploy app
     runs-on: ubuntu-latest
-    needs: build  # Corregido (antes era "need")
+    needs: test
+    environment: develop
+    name: develop
+    url: demo-dev.codigofacilito.com
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -46,4 +68,30 @@ jobs:
         with:
           context: .
           push: true
-          tags: peperro/app:v2
+          tags: peperro/app:v3
+
+
+
+  deploy_prod:
+    name: deploy app in prod
+    runs-on: ubuntu-latest
+    needs: test
+    environment: prod
+    name: prod
+    url: demo.codigofacilito.com
+    if: github.ref == 'refs/heads/main'|| github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Docker login
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: build and push docker image 
+        uses: docker/build-push-action@v6.15.0
+        with:
+          context: .
+          push: true
+          tags: peperro/app:v3
