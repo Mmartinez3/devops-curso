@@ -44,5 +44,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: mmartinez3:app:latest
+          tags: peperro:app:latest
           
