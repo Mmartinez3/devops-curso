@@ -2,15 +2,19 @@ name: demo github action
 
 on:
   push:
-    branches: ["devops-simple-node1"]
+    branches:
+      - devops-simple-node1
   pull_request:
-    branches: ["devops-simple-node1"]
-
+    branches:
+      - devops-simple-node1
   workflow_dispatch:
-  
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      steps:
-        - name: listar
-          run: ls -a
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Listar archivos
+        run: ls -a
