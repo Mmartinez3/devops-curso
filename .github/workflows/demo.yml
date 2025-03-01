@@ -21,17 +21,20 @@ jobs:
         with:
           node-version: 21
 
-      - name: instalar dependencias
+      - name: Instalar dependencias
         run: npm install
-      - name: instalar test
+
+      - name: Ejecutar tests
         run: npm run test
-        
+
   ci:
     runs-on: ubuntu-latest
-    need: build
+    needs: build  # Corregido (antes era "need")
     steps:
-      - uses: actions/checkout@v4
-      - name: docker login
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Docker login
         uses: docker/login-action@v3.3.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
